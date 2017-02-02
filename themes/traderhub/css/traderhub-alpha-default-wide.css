@@ -1,0 +1,18 @@
+/*Header content start*/
+
+.jobSectionLineConteiner,
+#zone-header #region-header-first .views-field-title,
+#zone-header #region-header-first .views-field-body{
+    left: calc(50% - 600px);
+    width: 1200px;
+}
+/*Header content end*/
+
+#block-views-learning-section-block .block-inner,
+#block-views-learning-section-block-1 .block-inner,
+#block-views-learning-section-block-2 .block-inner,
+.page-blog .view-blog .views-row article{
+    max-width: 1200px;
+}
+/*Learning secstion end*/
+/*Learning table end*/

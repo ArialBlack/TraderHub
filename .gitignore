@@ -1,0 +1,13 @@
+libraries/*
+
+build/node_modules/*
+biuld/bower_components*
+build/1/*
+build/bower_components/**/
+
+
+themes/omega/
+
+!modules/
+modules/*
+!modules/custom/
