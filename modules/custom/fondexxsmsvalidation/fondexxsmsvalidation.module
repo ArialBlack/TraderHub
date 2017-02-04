@@ -1,0 +1,123 @@
+<?php
+
+function fondexxsmsvalidation_boot() {
+  if (!isset($_SESSION['fondexxsmsvalidation'])) {
+    $_SESSION['fondexxsmsvalidation'] = array();
+  }
+}
+
+function fondexxsmsvalidation_form_alter(&$form, &$form_state, $form_id) {
+  if ($form['#id'] == 'webform-client-form-7') {
+    unset($form['actions']['submit']);
+
+    /*$form['smscode'] = array(
+        '#type' => 'textfield',
+        '#attributes' => array(
+            'placeholder' => t('Код подтверждения'),
+        ),
+    );*/
+
+    /*$form['anchor'] = array(
+        '#type' => 'markup',
+        '#markup' => '<a id="form7">form</a>',
+        '#delta' => -99
+    );*/
+
+    $form['sendsms'] = array(
+        '#type' => 'submit',
+        '#submit' => array('_send_code'),
+        '#value' => t('Выслать код')
+    );
+
+    $form['op2'] = array(
+        '#type' => 'submit',
+        '#submit' => array('_check_code'),
+        '#value' => t('Подтвердить')
+    );
+
+    //Read session data and set default values at form fields
+    $form['submitted']['name']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#name']) ?  $_SESSION['fondexxsmsvalidation']['#name'] : '';
+    $form['submitted']['lastname']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#lastname']) ?  $_SESSION['fondexxsmsvalidation']['#lastname'] : '';
+    $form['submitted']['country']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#tel']) ?  $_SESSION['fondexxsmsvalidation']['#country'] : '';
+    $form['submitted']['city']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#tel']) ?  $_SESSION['fondexxsmsvalidation']['#city'] : '';
+    $form['submitted']['tel']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#tel']) ?  $_SESSION['fondexxsmsvalidation']['#tel'] : '';
+    $form['submitted']['Email']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#email']) ?  $_SESSION['fondexxsmsvalidation']['#email'] : '';
+    $form['submitted']['body']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#body']) ?  $_SESSION['fondexxsmsvalidation']['#body'] : '';
+    $form['submitted']['agree']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#agree']) ?  $_SESSION['fondexxsmsvalidation']['#agree'] : '';
+  }
+}
+
+function _send_code(&$form, &$form_state) {
+  module_load_include('inc', 'fondexxsmsvalidation', 'smsc_api');
+  $form_state['redirect'] = '';
+
+  $phone = $form_state['values']['submitted']['tel'];
+
+  //Save form data in session
+  $_SESSION['fondexxsmsvalidation']['#name'] = $form_state['values']['submitted']['name'];
+  $_SESSION['fondexxsmsvalidation']['#lastname'] = $form_state['values']['submitted']['lastname'];
+  $_SESSION['fondexxsmsvalidation']['#country'] = $form_state['values']['submitted']['country'];
+  $_SESSION['fondexxsmsvalidation']['#city'] = $form_state['values']['submitted']['city'];
+  $_SESSION['fondexxsmsvalidation']['#tel'] = $phone;
+  $_SESSION['fondexxsmsvalidation']['#email'] = $form_state['values']['submitted']['Email'];
+  $_SESSION['fondexxsmsvalidation']['#body'] = $form_state['values']['submitted']['body'];
+  $_SESSION['fondexxsmsvalidation']['#agree'] = $form_state['values']['submitted']['agree'];
+
+  if(strlen($phone)> 10) { //todo
+    $r = send_sms($phone, ok_code($phone));
+
+    if ($r[1] > 0) {
+      drupal_set_message('Код подтверждения отправлен');
+    }
+  }
+}
+
+function _check_code(&$form, &$form_state) {
+  dsm($form_state);
+
+  global $user;
+  $nid = $form_state['complete form']['details']['nid']['#value'];
+  $node = node_load($nid);
+  $phone = $form_state['values']['submitted']['tel'];
+
+  $data = array(
+      1 => array($form_state['values']['submitted']['name']), // Имя
+      2 => array($form_state['values']['submitted']['lastname']), // Фамилия
+      3 => array($form_state['values']['submitted']['country']), // Страна
+      4 => array($form_state['values']['submitted']['city']), // Город
+      5 => array($phone),                                        // Телефон
+      6 => array($form_state['values']['submitted']['Email']), // Емейл
+      7 => array($form_state['values']['submitted']['body']), // Ваш вопрос
+      8 => array('+'), // Согласен на обработку
+  );
+
+  module_load_include('inc', 'webform', 'webform.module');
+  module_load_include('inc', 'webform', 'includes/webform.submissions');
+
+  $submission = (object) array(
+      'nid' => $nid,
+      'uid' => $user->uid,
+      'sid' => NULL,
+      'submitted' => REQUEST_TIME,
+      'completed' => REQUEST_TIME,
+      'remote_addr' => ip_address(),
+      'is_draft' => FALSE,
+      'data' => $data,
+  );
+
+  $code = $form_state['values']['submitted']['smscode'];
+  $oc = ok_code($phone);
+
+  if ($oc == $code) {
+    drupal_set_message("Номер активирован");
+    $sid = webform_submission_insert($node, $submission);
+    $form_state['redirect'] = '/thankyou1';
+  } else {
+    drupal_set_message("Неверный код подтверждения");
+    $form_state['redirect'] = '';
+  }
+}
+
+function ok_code($s) {
+  return hexdec(substr(md5($s."<Some secret string, haha!>"), 7, 5));
+}
