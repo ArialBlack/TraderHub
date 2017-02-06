@@ -51,10 +51,10 @@ function fondexxsmsvalidation_form_alter(&$form, &$form_state, $form_id) {
 
     $form['path'] = array(
         '#type' => 'hidden',
-        '#value' =>  drupal_is_front_page() ? '/' : request_path()
+        '#value' =>  drupal_is_front_page() ? '/' : '/'.request_path()
     );
 
-    $form['#action'] = drupal_is_front_page() ? '/' : request_path();
+    $form['#action'] = drupal_is_front_page() ? '/' : '/'.request_path();
 
     //Read session data and set default values at form fields
     $form['submitted']['name']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#name']) ?  $_SESSION['fondexxsmsvalidation']['#name'] : '';

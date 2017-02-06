@@ -353,4 +353,5 @@ version = '1.x'
 stylesheets[all][] = 'bower_components/font-awesome/css/font-awesome.css'
 stylesheets[all][] = 'css/main.css'
 
+scripts[] = 'js/js.cookie.js'
 scripts[] = 'js/main.js'

@@ -96,19 +96,36 @@
       }
     }
 
+    function webformsJob() {
+
+      if ($('body .webform-client-form').length > 0) {
+        $.getJSON("http://freegeoip.net/json/", function(data) {
+          Cookies.set('ipCountry', data.country_name, { expires: 1 });
+          Cookies.set('ipCity', data.city, { expires: 1 });
+        });
+      }
+
+      $('.webform-client-form').each(function() {
+        var $this = $(this),
+            $btn = $this.find('.btn_sendsms'),
+            $place = $this.find('.webform-component--smscode'),
+            $country = $this.find('.webform-component--country input'),
+            $city = $this.find('.webform-component--city input');
+
+        $btn.insertAfter($place);
+        $country.val(Cookies.get('ipCountry'));
+        $city.val(Cookies.get('ipCity'));
+      });
+    }
+
     $(document).ready(function () {
       $('.front .block-system-main').remove(); //
 
       $("body").delay(600).fadeIn(600);
       //$(window).scrollTop(300); // $(hash).offset().top
-      
-      $('.webform-client-form').each(function() {
-        var $this = $(this),
-            $btn = $this.find('.btn_sendsms'),
-            $place = $this.find('.webform-component--smscode');
-        $btn.insertAfter($place);
-      });
 
+
+      webformsJob();
       checkUrl2CMR();
     });
 
