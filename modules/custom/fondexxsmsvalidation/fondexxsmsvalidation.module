@@ -6,13 +6,22 @@ function fondexxsmsvalidation_boot() {
   }
 }
 
+function validate_tel($tel) {
+  if (!preg_match('/^((8|0|((\+|00)\d{1,2}))[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $tel)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 function fondexxsmsvalidation_form_alter(&$form, &$form_state, $form_id) {
+
   if ($form['#id'] == 'webform-client-form-7' || $form['#id'] == 'webform-client-form-23' || $form['#id'] == 'webform-client-form-24' || $form['#id'] == 'webform-client-form-25' || $form['#id'] == 'webform-client-form-43') {
     unset($form['actions']['submit']);
 
     $form['agree'] = array(
         '#type' => 'checkbox',
-        '#default_value' => 0,
+        '#default_value' => isset($_SESSION['fondexxsmsvalidation']['#agree']) ?  $_SESSION['fondexxsmsvalidation']['#agree'] : 0
     );
 
     $form['agree_pdf'] = array(
@@ -55,17 +64,15 @@ function fondexxsmsvalidation_form_alter(&$form, &$form_state, $form_id) {
     $form['submitted']['tel']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#tel']) ?  $_SESSION['fondexxsmsvalidation']['#tel'] : '';
     $form['submitted']['Email']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#Email']) ?  $_SESSION['fondexxsmsvalidation']['#Email'] : '';
     $form['submitted']['body']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#body']) ?  $_SESSION['fondexxsmsvalidation']['#body'] : '';
-    $form['submitted']['agree']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#agree']) ?  $_SESSION['fondexxsmsvalidation']['#agree'] : '';
+    //$form['submitted']['agree']['#default_value'] =  isset($_SESSION['fondexxsmsvalidation']['#agree']) ?  $_SESSION['fondexxsmsvalidation']['#agree'] : '';
   }
 }
 
 function _send_code(&$form, &$form_state) {
-  module_load_include('inc', 'fondexxsmsvalidation', 'smsc_api');
-  $form_state['redirect'] = $form_state['values']['submitted']['path'];
 
   $phone = $form_state['values']['submitted']['tel'];
+  $form_state['redirect'] = $form_state['values']['submitted']['path'];
 
-  //Save form data in session
   $_SESSION['fondexxsmsvalidation']['#name'] = $form_state['values']['submitted']['name'];
   $_SESSION['fondexxsmsvalidation']['#lastname'] = $form_state['values']['submitted']['lastname'];
   $_SESSION['fondexxsmsvalidation']['#country'] = $form_state['values']['submitted']['country'];
@@ -73,15 +80,24 @@ function _send_code(&$form, &$form_state) {
   $_SESSION['fondexxsmsvalidation']['#tel'] = $phone;
   $_SESSION['fondexxsmsvalidation']['#Email'] = $form_state['values']['submitted']['Email'];
   $_SESSION['fondexxsmsvalidation']['#body'] = $form_state['values']['submitted']['body'];
-  $_SESSION['fondexxsmsvalidation']['#agree'] = $form_state['values']['submitted']['agree'];
+  $_SESSION['fondexxsmsvalidation']['#agree'] = $form_state['values']['agree'];
 
-  if(strlen($phone)> 10) { //todo
+  if(!$form_state['values']['agree']) {
+    form_set_error('agree', 'Вы должны принять условия');
+    return false;
+  }
+
+  if(validate_tel($phone)) {
+    module_load_include('inc', 'fondexxsmsvalidation', 'smsc_api');
     $r = send_sms($phone, ok_code($phone));
 
     if ($r[1] > 0) {
       drupal_set_message('Код подтверждения отправлен');
     }
+  } else {
+    form_set_error('tel', 'Неверный формат номера');
   }
+
 }
 
 function _check_code(&$form, &$form_state) {
@@ -128,10 +144,6 @@ function _check_code(&$form, &$form_state) {
 
   $code = $form_state['values']['submitted']['smscode'];
   $oc = ok_code($phone);
-
-  //dsm($code);
-  //dsm($phone);
-  //dsm(ok_code($phone));
 
   if ($oc == $code) {
     drupal_set_message("Номер активирован");
@@ -181,7 +193,6 @@ function _check_code(&$form, &$form_state) {
 function ok_code($s) {
   return hexdec(substr(md5($s."<Some secret string, haha!>"), 7, 5));
 }
-
 
 /*
  * $form_state['redirect'] = array(

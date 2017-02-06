@@ -100,21 +100,14 @@
       $('.front .block-system-main').remove(); //
 
       $("body").delay(600).fadeIn(600);
-      $(window).scrollTop(300); // $(hash).offset().top
-
-
+      //$(window).scrollTop(300); // $(hash).offset().top
+      
       $('.webform-client-form').each(function() {
         var $this = $(this),
             $btn = $this.find('.btn_sendsms'),
             $place = $this.find('.webform-component--smscode');
-
-        console.log($btn);
-
         $btn.insertAfter($place);
       });
-
-
-      //console.log($('.btn_sendsms'));
 
       checkUrl2CMR();
     });
