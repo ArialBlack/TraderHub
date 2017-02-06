@@ -15,6 +15,9 @@
     })(window,document,'script','dataLayer','GTM-M593ZLX');</script>
   <!-- End Google Tag Manager -->
 
+  <script src="https://webtracking-v01.bpmonline.com/JS/track-cookies.js"></script>
+  <script src="https://webtracking-v01.bpmonline.com/JS/create-object.js"></script>
+
 </head>
 <body<?php print $attributes;?>>
 

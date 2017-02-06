@@ -639,8 +639,8 @@ ul{
     left: -178px;
     margin-top: 16px;
     padding-top: 12px;
-    position: relative;
-    top: 80px;
+    /*position: relative;
+    top: 80px;*/
 	text-transform: uppercase;
 	letter-spacing: 1px;
 }

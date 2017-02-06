@@ -2,24 +2,58 @@
   text-decoration: none !important;
 }
 
+.webform-client-form {
+  overflow: auto;
+}
 
 .webform-client-form .form-item {
-  &.webform-component--agree {
-    width: 40px !important;
-    margin-right: 10px;
+
+  &.webform-component--body {
+    margin-left: 0;
   }
 
-  &.webform-component--link2pdf {
+  &.form-item-agree {
+    width: 40px !important;
+    margin-right: 20px !important;
+    margin-left: 0 !important;
+    clear: left;
+
+    input {
+      margin-left: 0;
+      padding-left: 0;
+    }
+  }
+
+  &.form-item-link2pdf {
     width: auto;
     margin-right: auto;
     margin-bottom: 20px;
-    margin-top: 27px;
 
     a {
       text-decoration: none;
       color: black;
     }
   }
+
+  &.webform-component--smscode {
+    clear: left !important;
+    margin-left: 0 !important;
+
+    input {
+      height: 40px !important;
+    }
+  }
+}
+
+.btn_sendsms {
+  float: left !important;
+  margin-left: 20px !important;
+}
+
+.btn_validatesms {
+  float: left !important;
+  clear: both !important;
+  margin-left: 0 !important;
 }
 
 /*.webform-client-form .form-item label { display: block !important;} */
