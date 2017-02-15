@@ -64,7 +64,7 @@ footer a:visited{
 #messages .messages,
 .page-node-15 #page-title,
 .grippie{
-    display: none !important;
+    /*display: none !important;*/
 }
 
 button, input[type="reset"], input[type="submit"], input[type="button"], .form-actions input:hover{
@@ -395,9 +395,9 @@ ul{
 	min-width: 140px;
 }
 #section-footer .zone-footer-wrapper .block .views-row.views-row-3 .field-content a{
-    background-size: 54px 54px;
-    height: 54px;
-    width: 54px;
+    background-size: 32px 32px;
+    height: 32px;
+    width: 32px;
 }
 .envelope{
     background-image: url('../images/envelope.jpg');
@@ -408,6 +408,10 @@ ul{
 .twiiter{
      font-size: 0;
     background-image: url('../images/twiiter.jpg');
+}
+.vk{
+    font-size: 0;
+    background-image: url('../images/vk.jpg');
 }
 .facebook{
      font-size: 0;
@@ -635,8 +639,8 @@ ul{
     left: -178px;
     margin-top: 16px;
     padding-top: 12px;
-    position: relative;
-    top: 80px;
+    /*position: relative;
+    top: 80px;*/
 	text-transform: uppercase;
 	letter-spacing: 1px;
 }

@@ -1,7 +1,7 @@
 libraries/*
 
 build/node_modules/*
-biuld/bower_components*
+build/bower_components*
 build/1/*
 build/bower_components/**/
 
@@ -11,3 +11,8 @@ themes/omega/
 !modules/
 modules/*
 !modules/custom/
+
+bower_components/
+themes/traderhub/css/main.css
+modules/custom/fondexxsmsvalidation/smsc_api.php
+modules/custom/fondexxsmsvalidation/smsc_api.inc

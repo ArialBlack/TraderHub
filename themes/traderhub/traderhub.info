@@ -349,3 +349,9 @@ settings[alpha_region_footer_second_suffix] = ''
 settings[alpha_region_footer_second_weight] = '2'
 settings[alpha_region_footer_second_css] = ''
 version = '1.x'
+
+stylesheets[all][] = 'bower_components/font-awesome/css/font-awesome.css'
+stylesheets[all][] = 'css/main.css'
+
+scripts[] = 'js/js.cookie.js'
+scripts[] = 'js/main.js'

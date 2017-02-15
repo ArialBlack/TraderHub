@@ -1,0 +1,21 @@
+{
+  "name": "TraderHub",
+  "description": "",
+  "main": "",
+  "authors": [
+    "ArialBlack <andreyturik@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ArialBlack/TraderHub",
+  "directory": "../themes/traderhub",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "FortAwesome/Font-Awesome#^4.7.0"
+  }
+}
