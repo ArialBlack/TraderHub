@@ -6,14 +6,6 @@ function fondexxsmsvalidation_boot() {
   }
 }
 
-function validate_tel($tel) {
-  if (!preg_match('/^((8|0|((\+|00)\d{1,2}))[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$/', $tel)) {
-    return false;
-  } else {
-    return true;
-  }
-}
-
 function fondexxsmsvalidation_form_alter(&$form, &$form_state, $form_id) {
 
   if ($form['#id'] == 'webform-client-form-7' || $form['#id'] == 'webform-client-form-23' || $form['#id'] == 'webform-client-form-24' || $form['#id'] == 'webform-client-form-25' || $form['#id'] == 'webform-client-form-43') {
@@ -87,17 +79,14 @@ function _send_code(&$form, &$form_state) {
     return false;
   }
 
-  if(validate_tel($phone)) {
-    module_load_include('inc', 'fondexxsmsvalidation', 'smsc_api');
-    $r = send_sms($phone, ok_code($phone));
+  module_load_include('inc', 'fondexxsmsvalidation', 'smsc_api');
+  $r = send_sms($phone, ok_code($phone));
 
-    if ($r[1] > 0) {
-      drupal_set_message('Код подтверждения отправлен');
-    }
+  if ($r[1] > 0) {
+    drupal_set_message('Код подтверждения отправлен');
   } else {
-    form_set_error('tel', 'Неверный формат номера');
+    drupal_set_message('Что-то пошло не так с отправкой кода подтверждения');
   }
-
 }
 
 function _check_code(&$form, &$form_state) {

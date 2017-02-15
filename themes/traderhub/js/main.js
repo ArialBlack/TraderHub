@@ -49,30 +49,38 @@
       redirectUrl: "http://trader-hub.com/thankyou5"
     };
 
-    var submitted = 0;
+    var submitted = 0,
+        count = 0;
+
+    Object.size = function(obj) {
+      var size = 0, key;
+      for (key in obj) {
+        if (obj.hasOwnProperty(key)) size++;
+      }
+      return size;
+    };
 
     function URLToArray(url) {
       var request = {},
-          pairs = url.substring(url.indexOf('?') + 1).split('&')
+          pairs = url.substring(url.indexOf('?') + 1).split('&');
 
       for (var i = 0; i < pairs.length; i++) {
-        if(!pairs[i])
-          continue;
         var pair = pairs[i].split('=');
         var key = pair[0].substring(pair[0].lastIndexOf("[")+1,pair[0].lastIndexOf("]"));
         request[key] = decodeURIComponent(pair[1]);
 
-        if (decodeURIComponent(pair[1])) {
+        if (request[key]) {
           $('<input>').attr({
             type: 'hidden',
             id: 'crm_' + key,
             name: 'crm_' + key,
-            value: decodeURIComponent(pair[1])
+            value: request[key]
           }).appendTo('.region-page-bottom');
 
-          submitted = submitted + 1;
+          count = count + 1;
         }
       }
+
       return request;
     }
 
@@ -80,25 +88,24 @@
       var url = window.location.href;
 
       if (url.indexOf('thankyou') !== -1) {
-        URLToArray(url);
+        submitted = URLToArray(url);
 
-        if (url.indexOf('thankyou1') !== -1 && submitted >=6) {
-          landing.initLanding(config1);
+        if (url.indexOf('thankyou1') !== -1 && count >=6) {
+          //landing.initLanding(config1);
         }
 
-        if (url.indexOf('thankyou2') !== -1 && submitted >=6) {
-          landing.initLanding(config2);
+        if (url.indexOf('thankyou2') !== -1 && count >=6) {
+          //landing.initLanding(config2);
         }
 
-        if (url.indexOf('thankyou5') !== -1 && submitted >=6) {
-          landing.initLanding(config3);
+        if (url.indexOf('thankyou5') !== -1 && count >=6) {
+          //landing.initLanding(config3);
         }
       }
     }
 
     function webformsJob() {
-
-      if ($('body .webform-client-form').length > 0) {
+      if (!Cookies.get('ipCountry')) {
         $.getJSON("http://freegeoip.net/json/", function(data) {
           Cookies.set('ipCountry', data.country_name, { expires: 1 });
           Cookies.set('ipCity', data.city, { expires: 1 });
@@ -113,17 +120,34 @@
             $city = $this.find('.webform-component--city input');
 
         $btn.insertAfter($place);
-        $country.val(Cookies.get('ipCountry'));
-        $city.val(Cookies.get('ipCity'));
+
+        if (!$country.val()) {
+          $country.val(Cookies.get('ipCountry'));
+        }
+
+        if (!$city.val()) {
+          $city.val(Cookies.get('ipCity'));
+        }
       });
     }
+
+    $( ".webform-component" )
+        .on( "mouseenter", function() {
+          var $this = $(this),
+              $desc = $this.find('.description.formtips-processed');
+          $desc.css('display', 'block');
+        })
+        .on( "mouseleave", function() {
+          var $this = $(this),
+              $desc = $this.find('.description.formtips-processed');
+          $desc.css('display', 'none');
+        });
 
     $(document).ready(function () {
       $('.front .block-system-main').remove(); //
 
       $("body").delay(600).fadeIn(600);
-      //$(window).scrollTop(300); // $(hash).offset().top
-
+      //$(document).scrollTop(300); // $(hash).offset().top
 
       webformsJob();
       checkUrl2CMR();
