@@ -19,7 +19,7 @@
       redirectUrl: "http://trader-hub.com/thankyou1"
     };
 
-    var confi2 = {
+    var config2 = {
       fields: {
         "Name": "#hiddenCRMvalues #crm_name",
         "UsrSurname": "#hiddenCRMvalues #crm_lastname",
@@ -89,6 +89,7 @@
 
         if (url.indexOf('thankyou1') !== -1 && count >=6) {
           console.log(count);
+          //console.log(landing.initLanding(config1));
           landing.initLanding(config1);
         }
 
