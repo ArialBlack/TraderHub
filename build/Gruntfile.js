@@ -12,7 +12,7 @@ module.exports = function(grunt) {
                     dumpLineNumbers: 'comments'
                 },
                 files: {
-                    '../themes/traderhub/css/main.css': '../themes/traderhub/less/main.less',
+                    '../themes/traderhub/css/main.css': '../themes/traderhub/less/main.less'
                 }
             }
         },
@@ -24,11 +24,11 @@ module.exports = function(grunt) {
 
             less: {
                 files: [
-                    '../themes/traderhub/less/**/*.less',
+                    '../themes/traderhub/less/**/*.less'
                 ],
                 tasks: ['less']
-            },
-        },
+            }
+        }
     });
 
     // load npm modules
