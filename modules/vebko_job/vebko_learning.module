@@ -1,0 +1,462 @@
+<?php
+function vebko_learning_block_info() {
+    $blocks = array();
+    $blocks['vebko_learning'] = array(
+            'info' => t('Vebko Learning'),
+            'cache' => DRUPAL_NO_CACHE,
+            );
+    $blocks['vebko_learning_section'] = array(
+            'info' => t('Vebko Learning section'),
+            'cache' => DRUPAL_NO_CACHE,
+            );
+    $blocks['vebko_learning_section_1'] = array(
+            'info' => t('Vebko Learning section 1'),
+            'cache' => DRUPAL_NO_CACHE,
+            );
+    $blocks['vebko_learning_section_2'] = array(
+            'info' => t('Vebko Learning section 2'),
+            'cache' => DRUPAL_NO_CACHE,
+            );
+	$blocks['vebko_vimeo'] = array(
+			'info' => t('Vebko Vimeo'),
+			'cache' => DRUPAL_NO_CACHE,
+			);
+ return $blocks;
+}
+
+function vebko_learning_block_view($block_name = '') {
+	
+	if ($block_name == 'vebko_vimeo') {
+		$nodes = node_load_multiple(array(), array('type' => 'content_job'));
+        $nodes = array_values($nodes);
+		//echo '<pre>'; print_r($nodes);exit;
+		$field_title_second = $nodes[0]->field_title_second[und][2][value];
+		
+		$field_box_title_1 = $nodes[0]->field_box_title[und][4][value];
+		$field_box_title_2 = $nodes[0]->field_box_title[und][5][value];
+		
+		$field_box_body_1 = $nodes[0]->field_box_body[und][4][value];
+		$field_box_body_2 = $nodes[0]->field_box_body[und][5][value];
+	
+		
+		$field_vimeo_link_url = $nodes[0]->field_vimeo_link_url_[und];
+		$field_vimeo_link_url_count = count($field_vimeo_link_url);
+
+		$url_1 = $field_vimeo_link_url[0][value];
+		$expStr=explode("vimeo.com/",$url_1);
+		$url_1=$expStr[1];
+		$url_2 = $field_vimeo_link_url[1][value];
+		$expStr2=explode("vimeo.com/",$url_2);
+		$url_2=$expStr2[1];
+		
+	
+		$content = '<div class = "section">';
+			$content .= '<div class = "sectionTitle">'.$field_title_second.'</div>';
+			$content .= '<div class = "sectionOne">';
+				$content .= '<div class = "sectionOneTitle">'.$field_box_title_1.'</div>';
+				$content .= '<div class = "sectionOneBody">'.$field_box_body_1.'</div>';
+				$content .= '<div class = "sectionVideo">';
+					$content .= '<iframe src="https://player.vimeo.com/video/'.$url_1.'" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+				$content .= '</div>';
+			$content .= '</div>';
+			
+			$content .= '<div class = "sectionOne">';
+				$content .= '<div class = "sectionOneTitle">'.$field_box_title_2.'</div>';
+				$content .= '<div class = "sectionOneBody">'.$field_box_body_2.'</div>';
+				$content .= '<div class = "sectionVideo">';
+					$content .= '<iframe src="https://player.vimeo.com/video/'.$url_2.'" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+				$content .= '</div>';
+			$content .= '</div>';
+			
+		$content .= '</div>';
+		
+		  
+        $block = array(
+                'subject' => t('Vebko Learning'),
+                'content' => $content,
+        );
+        return $block;
+	}
+	
+	
+    if ($block_name == 'vebko_learning') {
+        
+        $nodes = node_load_multiple(array(), array('type' => 'learning_course'));
+        $nodes = array_values($nodes);
+        //echo '<pre>'; print_r($nodes);exit;
+	$content = '<table>';
+            $content .= '<tr>
+                          <th></th>';                            
+                            for ($x = 0; $x <= 2; $x++) {
+                                $content .= '<td>'.$nodes[$x]->title.'</td>';
+                            }                          
+            $content .= '</tr>';
+            $content .= '<tr>
+                          <th>'.t("Содержание курса").'</th>';                            
+                            for ($x = 0; $x <= 2; $x++) {
+                                $content .= '<td> <a href=" '.$nodes[$x]->field_link[und][0][url].'"> '.$nodes[$x]->field_link[und][0][title].'</a></td>';
+                            }                          
+            $content .= '</tr>';
+            $content .= '<tr class="vebkoPeople">
+                          <th>'.t("Обучение в группе/индивидуально").'</th>';                            
+                            for ($x = 0; $x <= 2; $x++) {
+                                $content .= '<td>'.$nodes[$x]->field_number_of_people[und][0][value].'</td>';
+                            }                          
+            $content .= '</tr>';
+            $content .= '<tr class="vebkoService">
+                          <th>'.t("Подключение к сервису аналитики и торговых рекомендаций").'</th>';                            
+                            for ($x = 0; $x <= 2; $x++) {
+                                $content .= '<td><div id="parent">'.$nodes[$x]->field_service[und][0][value].'<div id="popup"><div id="popupConteiner">'.$nodes[$x]->field_service_description[und][0][value].'</div></div></div></td>';
+                            }                          
+            $content .= '</tr>';
+            $content .= '<tr class="vebkoSupport">
+                          <th>'.t("Поддержка и сопровождение трейдера").'</th>';                            
+                            for ($x = 0; $x <= 2; $x++) {
+                                $content .= '<td>'.$nodes[$x]->field_support[und][0][value].'</td>';
+                            }                          
+            $content .= '</tr>';
+            $content .= '<tr class="vebkoBonus">
+                          <th>'.t("Бонус").'</th>';                            
+                            for ($x = 0; $x <= 2; $x++) {
+                                $content .= '<td>'.$nodes[$x]->field_bonus[und][0][value].'</td>';
+                            }                          
+            $content .= '</tr>';
+            $content .= '<tr class="vebkoPrice">
+                          <th>'.t("Стоимость").'</th>';                            
+                            for ($x = 0; $x <= 2; $x++) {
+                                $content .= '<td>'.$nodes[$x]->field_price[und][0][value].'</td>';
+                            }                          
+            $content .= '</tr>';
+                       
+                    $content .= '</table>';  
+        $block = array(
+                'subject' => t('Vebko Learning'),
+                'content' => $content,
+        );
+        return $block;
+    }
+    if ($block_name == 'vebko_learning_section') {
+        global $base_url;
+        $nodes = node_load_multiple(array(), array('type' => 'learning_sections'));
+        $nodes = array_values($nodes);
+        $nodeid = 0;
+        //  echo '<pre>'; print_r($nodes);exit;
+        $content = ''; 
+        $content .= '<div class="vebkoOneSection vebkoOneSection-'.$nodeid.'">';
+            $content .= '<div class = "vebkoOneSectionImage">';
+            $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_header_image[und][0][uri], 9);
+                 $content .= '<img src="'.$src.'"></imt>';
+            $content .= '</div>';
+            $content .= '<div  id="OneSection-'.$nodeid.'" name="OneSection-'.$nodeid.'"></div>';
+            $content .= '<div class = "vebkoOneSectionTitle">';
+                 $content .= $nodes[$nodeid]->title;
+            $content .= '</div>';
+            $content .= '<div class = "vebkoOneSectionBody">';
+                 $content .= $nodes[$nodeid]->body[und][0][value];
+            $content .= '</div>';
+            
+            $content .= '<div class = "vebkoOneSectionBoxs">';
+            for ($x = 0; $x <= 2; $x++) {
+                $content .= '<div class = "vebkoOneSectionBox">';
+                    /*$content .= '<div class = "vebkoOneSectionBoxTitle">';
+                        $content .= $nodes[$nodeid]->field_box_title[und][$x][value];
+                    $content .= '</div>';*/
+                    $content .= '<div class = "vebkoOneSectionBoxImage">';
+                        $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_box_image[und][0][uri], 9);
+                        $content .= '<img src="'.$src.'"></imt>';
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionBoxBody"><p>';
+                        $content .= $nodes[$nodeid]->field_box_body[und][$x][value];
+                    $content .= '</p></div>';
+                $content .= '</div>';
+            }
+            $content .= '</div>';
+            
+            /*$content .= '<div class = "vebkoOneSectionSecondBox">';
+                $content .= '<div class = "vebkoOneSectionSecondBoxTitle">';
+                    $content .= $nodes[$nodeid]->field_second_title[und][0][value];
+                $content .= '</div>';
+                $content .= '<div class = "vebkoOneSectionSecondBoxImage">';
+                    $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_box_image[und][0][uri], 9);
+                    $content .= '<img src="'.$src.'"></imt>';
+                $content .= '</div>';
+                $content .= '<div class = "vebkoOneSectionSecondBoxBody">';
+                    $content .= $nodes[$nodeid]->field_second_body[und][0][value];
+                $content .= '</div>';
+            $content .= '</div>';*/
+            
+            $content .= '<div class = "vebkoOneSectionThirdBoxs">';
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxLabel">';
+                        $content .= t('Срок обучения:');
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxText">';
+                        $content .=  $nodes[$nodeid]->field_duration[und][0][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox vebkoprice">';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxLabel">';
+                        $content .= t('Стоимость:');
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxText">';
+                        $content .=  $nodes[$nodeid]->field_price2[und][0][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxLabel">';
+                        $content .= t('');
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxText">';
+                        $content .=  $nodes[$nodeid]->field_number[und][0][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';                
+                     $content .= '<a href="'.$nodes[$nodeid]->field_link_course[und][0][url].'">'.$nodes[$nodeid]->field_link_course[und][0][title].'</a>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                $content .= '</div>';
+                
+                
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                $content .= '</div>';
+            $content .= '</div>';
+            
+        $content .= '</div>';
+        
+        $block = array(
+                'subject' => t(''),
+                'content' => $content,
+        );
+        return $block;
+    }
+    
+    if ($block_name == 'vebko_learning_section_1') {
+        global $base_url;
+        $nodes = node_load_multiple(array(), array('type' => 'learning_sections'));
+        $nodes = array_values($nodes);
+        $nodeid = 1;
+        //  echo '<pre>'; print_r($nodes);exit;
+        $content = ''; 
+        $content .= '<div class="vebkoOneSection vebkoOneSection-'.$nodeid.'">';
+            $content .= '<div class = "vebkoOneSectionImage">';
+            $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_header_image[und][0][uri], 9);
+                 $content .= '<img src="'.$src.'"></imt>';
+            $content .= '</div>';
+            $content .= '<div  id="OneSection-'.$nodeid.'" name="OneSection-'.$nodeid.'"></div>';
+			
+            $content .= '<div class = "vebkoOneSectionConteinerTitle">';
+				$content .= '<div class = "vebkoOneSectionTitle">';
+					 $content .= $nodes[$nodeid]->title;
+				$content .= '</div>';
+				
+				$content .= '<div class = "vebkoOneSectionBody">';
+					 $content .= $nodes[$nodeid]->body[und][0][value];
+				$content .= '</div>';
+			$content .= '</div>';
+			/*$content .= '<div class = "vebkoOneSectionBonusImage">';
+                $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_bonus_image[und][0][uri], 9);
+                 $content .= '<img src="'.$src.'"></imt>';
+            $content .= '</div>';*/
+            
+            
+            $content .= '<div class = "vebkoOneSectionBoxs">';
+            for ($x = 0; $x <= 2; $x++) {
+                $content .= '<div class = "vebkoOneSectionBox">';
+                    $content .= '<div class = "vebkoOneSectionBoxTitle">';
+                        $content .= $nodes[$nodeid]->field_box_title[und][$x][value];
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionBoxImage">';
+                        $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_box_image[und][0][uri], 9);
+                        $content .= '<img src="'.$src.'"></imt>';
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionBoxBody">';
+                        $content .= $nodes[$nodeid]->field_box_body[und][$x][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+            }
+            $content .= '</div>';
+            
+            $content .= '<div class = "vebkoOneSectionSecondBox">';
+                $content .= '<div class = "vebkoOneSectionSecondBoxTitle">';
+                    $content .= $nodes[$nodeid]->field_second_title[und][0][value];
+                $content .= '</div>';
+                $content .= '<div class = "vebkoOneSectionSecondBoxImage">';
+                    $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_box_image[und][0][uri], 9);
+                    $content .= '<img src="'.$src.'"></imt>';
+                $content .= '</div>';
+                $content .= '<div class = "vebkoOneSectionSecondBoxBody">';
+                    $content .= $nodes[$nodeid]->field_second_body[und][0][value];
+                $content .= '</div>';
+            $content .= '</div>';
+            
+            $content .= '<div class = "vebkoOneSectionThirdBoxs">';
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxLabel">';
+                        $content .= t('Срок обучения:');
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxText">';
+                        $content .=  $nodes[$nodeid]->field_duration[und][0][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox vebkoprice">';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxLabel">';
+                        $content .= t('Стоимость:');
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxText">';
+                        $content .=  $nodes[$nodeid]->field_price2[und][0][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxLabel">';
+                        $content .= t('');
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxText">';
+                        $content .=  $nodes[$nodeid]->field_number[und][0][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';                
+                     $content .= '<a href="'.$nodes[$nodeid]->field_link_course[und][0][url].'">'.$nodes[$nodeid]->field_link_course[und][0][title].'</a>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                $content .= '</div>';      
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                $content .= '</div>';
+            $content .= '</div>';
+            
+        $content .= '</div>';
+        
+        $block = array(
+                'subject' => t(''),
+                'content' => $content,
+        );
+        return $block;
+    }
+    
+    if ($block_name == 'vebko_learning_section_2') {
+        global $base_url;
+        $nodes = node_load_multiple(array(), array('type' => 'learning_sections'));
+        $nodes = array_values($nodes);
+        $nodeid = 2;
+        //  echo '<pre>'; print_r($nodes);exit;
+        $content = ''; 
+        $content .= '<div class="vebkoOneSection vebkoOneSection-'.$nodeid.'">';
+            $content .= '<div class = "vebkoOneSectionImage">';
+            $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_header_image[und][0][uri], 9);
+                 $content .= '<img src="'.$src.'"></imt>';
+            $content .= '</div>';
+            $content .= '<div  id="OneSection-'.$nodeid.'" name="OneSection-'.$nodeid.'"></div>';
+			
+			$content .= '<div class = "vebkoOneSectionConteinerTitle">';
+				$content .= '<div class = "vebkoOneSectionTitle">';
+					 $content .= $nodes[$nodeid]->title;
+				$content .= '</div>';
+				
+				$content .= '<div class = "vebkoOneSectionBody">';
+					 $content .= $nodes[$nodeid]->body[und][0][value];
+				$content .= '</div>';
+			$content .= '</div>';
+			$content .= '<div class = "vebkoOneSectionBonusImage">';
+                $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_bonus_image[und][0][uri], 9);
+                 $content .= '<img src="'.$src.'"></imt>';
+            $content .= '</div>';
+            
+            $content .= '<div class = "vebkoOneSectionBoxs">';
+            for ($x = 0; $x <= 2; $x++) {
+                $content .= '<div class = "vebkoOneSectionBox">';
+                    $content .= '<div class = "vebkoOneSectionBoxTitle">';
+                        $content .= $nodes[$nodeid]->field_box_title[und][$x][value];
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionBoxImage">';
+                        $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_box_image[und][0][uri], 9);
+                        $content .= '<img src="'.$src.'"></imt>';
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionBoxBody">';
+                        $content .= $nodes[$nodeid]->field_box_body[und][$x][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+            }
+            $content .= '</div>';
+            
+            /*$content .= '<div class = "vebkoOneSectionSecondBox">';
+                $content .= '<div class = "vebkoOneSectionSecondBoxTitle">';
+                    $content .= $nodes[$nodeid]->field_second_title[und][0][value];
+                $content .= '</div>';
+                $content .= '<div class = "vebkoOneSectionSecondBoxImage">';
+                    $src = $base_url.'/sites/default/files/'.substr($nodes[$nodeid]->field_box_image[und][0][uri], 9);
+                    $content .= '<img src="'.$src.'"></imt>';
+                $content .= '</div>';
+                $content .= '<div class = "vebkoOneSectionSecondBoxBody">';
+                    $content .= $nodes[$nodeid]->field_second_body[und][0][value];
+                $content .= '</div>';
+            $content .= '</div>';*/
+            
+            $content .= '<div class = "vebkoOneSectionThirdBoxs">';
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxLabel">';
+                        $content .= t('Срок обучения:');
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxText">';
+                        $content .=  $nodes[$nodeid]->field_duration[und][0][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox vebkoprice">';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxLabel">';
+                        $content .= t('Стоимость:');
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxText">';
+                        $content .=  $nodes[$nodeid]->field_price2[und][0][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxLabel">';
+                        $content .= t('');
+                    $content .= '</div>';
+                    $content .= '<div class = "vebkoOneSectionThirdBoxText">';
+                        $content .=  $nodes[$nodeid]->field_number[und][0][value];
+                    $content .= '</div>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';                
+                     $content .= '<a href="'.$nodes[$nodeid]->field_link_course[und][0][url].'">'.$nodes[$nodeid]->field_link_course[und][0][title].'</a>';
+                $content .= '</div>';
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                $content .= '</div>';
+                
+                
+                
+                $content .= '<div class = "vebkoOneSectionThirdBox">';
+                $content .= '</div>';
+            $content .= '</div>';
+            
+        $content .= '</div>';
+        
+        $block = array(
+                'subject' => t(''),
+                'content' => $content,
+        );
+        return $block;
+    }
+    
+}

@@ -11,6 +11,7 @@ themes/omega/
 !modules/
 modules/*
 !modules/custom/
+!modules/vebko_job/
 
 bower_components/
 themes/traderhub/css/main.css
