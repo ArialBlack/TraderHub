@@ -138,6 +138,13 @@ function _check_code(&$form, &$form_state) {
     drupal_set_message("Номер активирован");
     $sid = webform_submission_insert($node, $submission);
 
+    drupal_mail('system', 'mail', 'o.y@fondexx.com', language_default(), array(
+        'context' => array(
+            'subject' => 'Новое заполнение формы на сайте TraderHub',
+            'message' => 'Результаты могут быть просмотрены администратором тут: http://trader-hub.com/node/' . $nid . '/webform-results',
+        )));
+
+
     switch ($nid) {
       case 7:
         $form_state['redirect'] = array(

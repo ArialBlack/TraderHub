@@ -33,7 +33,7 @@
 				$field_box_body[$x] = $field_title_second['#object']->field_box_body['und'][$x]['value'];
 				$field_title_second[$x] = $field_title_second['#object']->field_title_second['und'][$x]['value'];
 			}
-			$body = $body['#object']->body[und][0][value];		
+			$body = $body['#object']->body['und'][0]['value'];
 			//echo "<pre>"; print_r ($body); exit;
 			?>
 			

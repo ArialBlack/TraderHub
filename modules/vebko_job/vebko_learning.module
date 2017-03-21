@@ -30,22 +30,22 @@ function vebko_learning_block_view($block_name = '') {
 		$nodes = node_load_multiple(array(), array('type' => 'content_job'));
         $nodes = array_values($nodes);
 		//echo '<pre>'; print_r($nodes);exit;
-		$field_title_second = $nodes[0]->field_title_second[und][2][value];
+		$field_title_second = $nodes[0]->field_title_second['und'][2]['value'];
 		
-		$field_box_title_1 = $nodes[0]->field_box_title[und][4][value];
-		$field_box_title_2 = $nodes[0]->field_box_title[und][5][value];
+		$field_box_title_1 = $nodes[0]->field_box_title['und'][4]['value'];
+		$field_box_title_2 = $nodes[0]->field_box_title['und'][5]['value'];
 		
-		$field_box_body_1 = $nodes[0]->field_box_body[und][4][value];
-		$field_box_body_2 = $nodes[0]->field_box_body[und][5][value];
+		$field_box_body_1 = $nodes[0]->field_box_body['und'][4]['value'];
+		$field_box_body_2 = $nodes[0]->field_box_body['und'][5]['value'];
 	
 		
-		$field_vimeo_link_url = $nodes[0]->field_vimeo_link_url_[und];
+		$field_vimeo_link_url = $nodes[0]->field_vimeo_link_url_['und'];
 		$field_vimeo_link_url_count = count($field_vimeo_link_url);
 
-		$url_1 = $field_vimeo_link_url[0][value];
+		$url_1 = $field_vimeo_link_url[0]['value'];
 		$expStr=explode("vimeo.com/",$url_1);
 		$url_1=$expStr[1];
-		$url_2 = $field_vimeo_link_url[1][value];
+		$url_2 = $field_vimeo_link_url[1]['value'];
 		$expStr2=explode("vimeo.com/",$url_2);
 		$url_2=$expStr2[1];
 		
