@@ -76,17 +76,37 @@ function _send_code(&$form, &$form_state) {
 
   if(!$form_state['values']['agree']) {
     form_set_error('agree', 'Вы должны принять условия');
-    return false;
-  }
+    $form_state['redirect'] = array(
+        drupal_is_front_page() ? '/' : '/'.request_path(),
+        array(
+            'query' => array(
+                'form-error' => $form["#id"],
+            ),
+            //'fragment' => 'webform-client-form-7',
+        ),
+    );
 
-  module_load_include('inc', 'fondexxsmsvalidation', 'smsc_api');
-  $r = send_sms($phone, ok_code($phone));
-
-  if ($r[1] > 0) {
-    drupal_set_message('Код подтверждения отправлен');
   } else {
-    drupal_set_message('Что-то пошло не так с отправкой кода подтверждения');
+    module_load_include('inc', 'fondexxsmsvalidation', 'smsc_api');
+    $r = send_sms($phone, ok_code($phone));
+
+    if ($r[1] > 0) {
+      drupal_set_message('Код подтверждения отправлен');
+      $form_state['redirect'] = array(
+          drupal_is_front_page() ? '/' : '/'.request_path(),
+          array(
+              'query' => array(
+                  'form-error' => $form["#id"],
+              ),
+            //'fragment' => 'webform-client-form-7',
+          ),
+      );
+    } else {
+      drupal_set_message('Что-то пошло не так с отправкой кода подтверждения');
+    }
   }
+
+
 }
 
 function _check_code(&$form, &$form_state) {
@@ -182,7 +202,16 @@ function _check_code(&$form, &$form_state) {
 
   } else {
     drupal_set_message("Неверный код подтверждения");
-    $form_state['redirect'] = '';
+    //$form_state['redirect'] = '';
+    $form_state['redirect'] = array(
+        drupal_is_front_page() ? '/' : '/'.request_path(),
+        array(
+            'query' => array(
+                'form-error' => $form["#id"],
+            ),
+          //'fragment' => 'webform-client-form-7',
+        ),
+    );
   }
 }
 
