@@ -62,6 +62,38 @@
       return request;
     }
 
+    function getURLParameters() {
+      var url = window.location.href;
+      var result = {};
+      var searchIndex = url.indexOf("?");
+      if (searchIndex == -1 ) return result;
+      var sPageURL = url.substring(searchIndex +1);
+      var sURLVariables = sPageURL.split('&');
+      for (var i = 0; i < sURLVariables.length; i++)
+      {
+        var sParameterName = sURLVariables[i].split('=');
+        result[sParameterName[0]] = sParameterName[1];
+      }
+
+      return result;
+    }
+
+    function scroll2Error() {
+      var params = getURLParameters();
+      for (var paramName in params){
+        if (paramName == 'form-error') {
+          var dest = params[paramName];
+
+          var p = $("#"+dest).offset().top;
+
+          $('html, body').animate({
+            scrollTop: p
+          }, 1000);
+
+        }
+      }
+    }
+
     function buildCRMForm(url) {
       var submitted = URLToArray(url),
           form = '<form id="hiddenCRMvalues">',
@@ -143,12 +175,14 @@
 
     $(document).ready(function () {
       $('.front .block-system-main').remove(); //
-
-      $("body").delay(600).fadeIn(600);
-      //$(document).scrollTop(300); // $(hash).offset().top
+      //$("body").delay(600).fadeIn(600);
 
       webformsJob();
       send2CRM();
+    });
+
+    $(window).load(function() {
+      scroll2Error();
     });
 
   });
