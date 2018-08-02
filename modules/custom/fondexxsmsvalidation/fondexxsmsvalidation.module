@@ -105,8 +105,6 @@ function _send_code(&$form, &$form_state) {
       drupal_set_message('Что-то пошло не так с отправкой кода подтверждения');
     }
   }
-
-
 }
 
 function _check_code(&$form, &$form_state) {
@@ -158,12 +156,18 @@ function _check_code(&$form, &$form_state) {
     drupal_set_message("Номер активирован");
     $sid = webform_submission_insert($node, $submission);
 
-    drupal_mail('system', 'mail', 'o.y@fondexx.com', language_default(), array(
+    drupal_mail('system', 'mail', 'o.y@fondexx.com, info@fondexx.com, andreyturik@gmail.com', language_default(), array(
         'context' => array(
             'subject' => 'Новое заполнение формы на сайте TraderHub',
-            'message' => 'Результаты могут быть просмотрены администратором тут: http://trader-hub.com/node/' . $nid . '/webform-results',
+            'message' => 'Имя: ' . $form_state['values']['submitted']['name'] . "\r\n" .
+              'Фамилия: ' . $form_state['values']['submitted']['lastname'] . "\r\n" .
+              'Страна: ' . $form_state['values']['submitted']['country'] . "\r\n" .
+              'Город: ' . $form_state['values']['submitted']['city'] . "\r\n" .
+              'E-mail: ' . $form_state['values']['submitted']['Email'] . "\r\n" .
+              'Телефон: ' . $phone . "\r\n" .
+              'Вопрос: ' . $form_state['values']['submitted']['body'] . "\r\n" .
+              'Результаты могут быть просмотрены администратором тут: http://trader-hub.com/node/' . $nid . '/webform-results',
         )));
-
 
     switch ($nid) {
       case 7:

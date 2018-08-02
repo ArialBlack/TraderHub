@@ -84,51 +84,17 @@ function vebko_learning_block_view($block_name = '') {
         $nodes = node_load_multiple(array(), array('type' => 'learning_course'));
         $nodes = array_values($nodes);
         //echo '<pre>'; print_r($nodes);exit;
-	$content = '<table>';
-            $content .= '<tr>
-                          <th></th>';                            
-                            for ($x = 0; $x <= 2; $x++) {
-                                $content .= '<td>'.$nodes[$x]->title.'</td>';
-                            }                          
-            $content .= '</tr>';
-            $content .= '<tr>
-                          <th>'.t("Содержание курса").'</th>';                            
-                            for ($x = 0; $x <= 2; $x++) {
-                                $content .= '<td> <a href=" '.$nodes[$x]->field_link[und][0][url].'"> '.$nodes[$x]->field_link[und][0][title].'</a></td>';
-                            }                          
-            $content .= '</tr>';
-            $content .= '<tr class="vebkoPeople">
-                          <th>'.t("Обучение в группе/индивидуально").'</th>';                            
-                            for ($x = 0; $x <= 2; $x++) {
-                                $content .= '<td>'.$nodes[$x]->field_number_of_people[und][0][value].'</td>';
-                            }                          
-            $content .= '</tr>';
-            $content .= '<tr class="vebkoService">
-                          <th>'.t("Подключение к сервису аналитики и торговых рекомендаций").'</th>';                            
-                            for ($x = 0; $x <= 2; $x++) {
-                                $content .= '<td><div id="parent">'.$nodes[$x]->field_service[und][0][value].'<div id="popup"><div id="popupConteiner">'.$nodes[$x]->field_service_description[und][0][value].'</div></div></div></td>';
-                            }                          
-            $content .= '</tr>';
-            $content .= '<tr class="vebkoSupport">
-                          <th>'.t("Поддержка и сопровождение трейдера").'</th>';                            
-                            for ($x = 0; $x <= 2; $x++) {
-                                $content .= '<td>'.$nodes[$x]->field_support[und][0][value].'</td>';
-                            }                          
-            $content .= '</tr>';
-            $content .= '<tr class="vebkoBonus">
-                          <th>'.t("Бонус").'</th>';                            
-                            for ($x = 0; $x <= 2; $x++) {
-                                $content .= '<td>'.$nodes[$x]->field_bonus[und][0][value].'</td>';
-                            }                          
-            $content .= '</tr>';
-            $content .= '<tr class="vebkoPrice">
-                          <th>'.t("Стоимость").'</th>';                            
-                            for ($x = 0; $x <= 2; $x++) {
-                                $content .= '<td>'.$nodes[$x]->field_price[und][0][value].'</td>';
-                            }                          
-            $content .= '</tr>';
-                       
-                    $content .= '</table>';  
+
+      $content = '<table><tbody><tr>
+                          <th></th><td>TraderHub Pivot Point</td><td>TraderHub Professional</td><td>TraderHub Individual</td></tr><tr>
+                          <th>Кратное описание</th><td valign="top"> Программа из двух курсов. Курсы &ldquo;Основы трейдинга на NYSE&rdquo; и &ldquo;Ваша первая торговая стратегия&rdquo;.</td><td valign="top"> Программа из трех профессиональных торговых стратегий: &ldquo;Pump hunting&rdquo;, &ldquo;Earnings trading&rdquo;, &ldquo;Order Imbalance&rdquo;</td><td valign="top">Индивидуальное обучение</td></tr><tr class="vebkoPeople">
+                          <th>Содержание</th><td align="center" valign="middle"><a href=" #OneSection-0">Подробнее</a></td><td align="center" valign="middle"><a href=" #OneSection-1">Подробнее</a></td><td align="center" valign="middle"><a href=" #OneSection-2">Подробнее</a></td></tr><tr class="vebkoService">
+                          <th><strong id="docs-internal-guid-8c4f94fc-caea-7f73-45a3-60d87be627a4">Счет в управление</strong></th><td>Нет</td><td>На конкурсных условиях</td><td>Гарантированно, $100 000 BP/$500 risk</td></tr><tr class="vebkoPrice">
+                          <th>Стоимость</th>
+                          <td>$150</td>
+                          <td>$500</td><td>$3000</td></tr></tbody></table>';
+
+
         $block = array(
                 'subject' => t('Vebko Learning'),
                 'content' => $content,
