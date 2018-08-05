@@ -12,3 +12,8 @@ function traderhub_preprocess_node(&$vars) {
   }
 
 }
+
+function traderhub_preprocess_page(&$variables) {
+  drupal_add_js(drupal_get_path('theme', 'traderhub') .'/js/track-cookies.js', 'file');
+  drupal_add_js(drupal_get_path('theme', 'traderhub') .'/js/create-object.js', 'file');
+}
