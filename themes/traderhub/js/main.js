@@ -3,59 +3,72 @@
 
     //var hash = window.location.hash;
    // console.log(hash);
+    // main page
+      var config1 = {
+        fields: {
+          "Name": "#hiddenCRMvalues #crm_name",
+          "UsrSurname": "#hiddenCRMvalues #crm_lastname",
+          "Email": "#hiddenCRMvalues #crm_Email",
+          "MobilePhone": "#hiddenCRMvalues #crm_phone",
+          "City": "#hiddenCRMvalues #crm_city",
+          "Country": "#hiddenCRMvalues #crm_country",
+          "Commentary": "#hiddenCRMvalues #crm_body"
+        },
+        landingId: "8a768405-a656-43b5-8487-fdbe78fc3e0e",
+        serviceUrl: "https://fondexx.bpmonline.com/0/ServiceModel/GeneratedWebFormService.svc/SaveWebFormLeadData",
+        redirectUrl: "http://trader-hub.com/thankyou1"
+      };
 
-    var config1 = {
-      fields: {
-        "Name": "#hiddenCRMvalues #crm_name",
-        "UsrSurname": "#hiddenCRMvalues #crm_lastname",
-        "Email": "#hiddenCRMvalues #crm_Email",
-        "MobilePhone": "#hiddenCRMvalues #crm_phone",
-        "City": "#hiddenCRMvalues #crm_city",
-        "Country": "#hiddenCRMvalues #crm_country",
-        "Commentary": "#hiddenCRMvalues #crm_body"
-      },
-      landingId: "8a768405-a656-43b5-8487-fdbe78fc3e0e",
-      serviceUrl: "https://fondexx.bpmonline.com/0/ServiceModel/GeneratedWebFormService.svc/SaveWebFormLeadData",
-      redirectUrl: "http://trader-hub.com/thankyou1"
-    };
+      // study
+      var config2 = {
+        fields: {
+          "Name": "#hiddenCRMvalues #crm_name",
+          "UsrSurname": "#hiddenCRMvalues #crm_lastname",
+          "Email": "#hiddenCRMvalues #crm_Email",
+          "MobilePhone": "#hiddenCRMvalues #crm_phone",
+          "City": "#hiddenCRMvalues #crm_city",
+          "Country": "#hiddenCRMvalues #crm_country",
+          "Commentary": "#hiddenCRMvalues #crm_body"
+        },
+        landingId: "46234ad8-7d7f-4dca-a3be-6385833cc633",
+        serviceUrl: "https://fondexx.bpmonline.com/0/ServiceModel/GeneratedWebFormService.svc/SaveWebFormLeadData",
+        redirectUrl: "http://trader-hub.com/thankyou2",
+        onError: handleErrors,
+        onComplete: stadyCompleteCallbackForCRM
+      };
 
-    var confi2 = {
-      fields: {
-        "Name": "#hiddenCRMvalues #crm_name",
-        "UsrSurname": "#hiddenCRMvalues #crm_lastname",
-        "Email": "#hiddenCRMvalues #crm_Email",
-        "MobilePhone": "#hiddenCRMvalues #crm_phone",
-        "City": "#hiddenCRMvalues #crm_city",
-        "Country": "#hiddenCRMvalues #crm_country",
-        "Commentary": "#hiddenCRMvalues #crm_body"
-      },
-      landingId: "46234ad8-7d7f-4dca-a3be-6385833cc633",
-      serviceUrl: "https://fondexx.bpmonline.com/0/ServiceModel/GeneratedWebFormService.svc/SaveWebFormLeadData",
-      redirectUrl: "http://trader-hub.com/thankyou2"
-    };
+      // proptrading
+      var config3 = {
+        fields: {
+          "Name": "#hiddenCRMvalues #crm_name",
+          "UsrSurname": "#hiddenCRMvalues #crm_lastname",
+          "Email": "#hiddenCRMvalues #crm_Email",
+          "MobilePhone": "#hiddenCRMvalues #crm_phone",
+          "City": "#hiddenCRMvalues #crm_city",
+          "Country": "#hiddenCRMvalues #crm_country",
+          "Commentary": "#hiddenCRMvalues #crm_body"
+        },
+        landingId: "930d2e55-5609-458f-8317-09bc65478733",
+        serviceUrl: "https://fondexx.bpmonline.com/0/ServiceModel/GeneratedWebFormService.svc/SaveWebFormLeadData",
+        redirectUrl: "http://trader-hub.com/thankyou5"
+      };
 
-    var config3 = {
-      fields: {
-        "Name": "#hiddenCRMvalues #crm_name",
-        "UsrSurname": "#hiddenCRMvalues #crm_lastname",
-        "Email": "#hiddenCRMvalues #crm_Email",
-        "MobilePhone": "#hiddenCRMvalues #crm_phone",
-        "City": "#hiddenCRMvalues #crm_city",
-        "Country": "#hiddenCRMvalues #crm_country",
-        "Commentary": "#hiddenCRMvalues #crm_body"
-      },
-      landingId: "21f00e1c-f758-46af-abd6-ac609a40614d",
-      serviceUrl: "https://fondexx.bpmonline.com/0/ServiceModel/GeneratedWebFormService.svc/SaveWebFormLeadData",
-      redirectUrl: "http://trader-hub.com/thankyou5"
-    };
+    function handleErrors() {
+      window.alert('Произошла, ошибка:', error);
+      console.log('Error:', JSON.stringify(response), status, error);
+    }
+
+    function stadyCompleteCallbackForCRM(response) {
+      console.log('success for registration result:', response);
+    }
 
     function URLToArray(url) {
       var request = {},
-          pairs = url.substring(url.indexOf('?') + 1).split('&'),
-          subValues = 0;
+          pairs = url.substring(url.indexOf('?') + 1).split('&');
 
       for (var i = 0; i < pairs.length; i++) {
-        var pair = pairs[i].split('=');
+        pairs[i] = decodeURIComponent(pairs[i]);
+        var pair = pairs[i].split("\=");
         var key = pair[0].substring(pair[0].lastIndexOf("[")+1,pair[0].lastIndexOf("]"));
         request[key] = decodeURIComponent(pair[1]);
       }
@@ -109,6 +122,7 @@
 
       form = form + '</form>';
       $(form).appendTo('.region-page-bottom');
+
       return subvalues;
     }
 
@@ -120,16 +134,15 @@
         count = buildCRMForm(url);
 
         if (url.indexOf('thankyou1') !== -1 && count >=6) {
-          console.log(count);
-          landing.initLanding(config1);
+          landing.createObjectFromLanding(config1);
         }
 
         if (url.indexOf('thankyou2') !== -1 && count >=6) {
-          landing.initLanding(config2);
+          landing.createLeadFromLanding(config2);
         }
 
         if (url.indexOf('thankyou5') !== -1 && count >=6) {
-          landing.initLanding(config3);
+          landing.createLeadFromLanding(config3);
         }
       }
     }
