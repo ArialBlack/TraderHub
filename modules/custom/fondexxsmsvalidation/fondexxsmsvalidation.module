@@ -8,6 +8,27 @@ function fondexxsmsvalidation_boot() {
 
 function fondexxsmsvalidation_form_alter(&$form, &$form_state, $form_id) {
 
+  if(isset($_COOKIE["fndxxHref"])) {
+    $fndxxHref = $_COOKIE["fndxxHref"];
+  } else {
+    $fndxxHref = '';
+  }
+
+  if(isset($_COOKIE["fndxxRef"])) {
+    $fndxxRef = $_COOKIE["fndxxRef"];
+  } else {
+    $fndxxRef = '';
+  }
+
+  if(isset($_COOKIE["fndxxTrackingId"])) {
+    $fndxxTrackingId = $_COOKIE["fndxxTrackingId"];
+  } else {
+    $fndxxTrackingId = '';
+  }
+
+  $refStrings = array($fndxxTrackingId, $fndxxHref, $fndxxRef);
+  $form['submitted']['wt']['#default_value']= json_encode($refStrings);
+
   if ($form['#id'] == 'webform-client-form-7' || $form['#id'] == 'webform-client-form-23' || $form['#id'] == 'webform-client-form-24' || $form['#id'] == 'webform-client-form-25' || $form['#id'] == 'webform-client-form-43') {
     unset($form['actions']['submit']);
 
