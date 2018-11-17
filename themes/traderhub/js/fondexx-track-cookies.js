@@ -221,7 +221,6 @@
 
 (function ($) {
   $(function() {
-
     function readCookie(name) {
       var nameEQ = name + "=";
       var ca = document.cookie.split(';');
@@ -233,16 +232,19 @@
       return null;
     }
 
-      var $wt = $('input[name="submitted[wt]"]'),
-        wtVal = $wt.val();
+    var $wt = $('input[name="submitted[wt]"]');
+
+    $wt.each(function( index ) {
+      var wtVal = $(this).val();
 
       if (wtVal.length < 15) {
-          var fndxxHref = readCookie('bpmHref').replace(/\//g, "\\/"),
-            fndxxRef = readCookie('fndxxRef').replace(/\//g, "\\/"),
-            fndxxTrackingId = readCookie('fndxxTrackingId'),
-            json = '["' + fndxxTrackingId +'", "' + fndxxHref +'", "' + fndxxRef + '"]';
+        var fndxxHref = readCookie('bpmHref').replace(/\//g, "\\/"),
+          fndxxRef = readCookie('fndxxRef').replace(/\//g, "\\/"),
+          fndxxTrackingId = readCookie('fndxxTrackingId'),
+          json = '["' + fndxxTrackingId +'", "' + fndxxHref +'", "' + fndxxRef + '"]';
 
-          $wt.val(json)
+        $(this).val(json);
       }
+    });
   });
 }(jQuery));
